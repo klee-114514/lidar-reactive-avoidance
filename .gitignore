@@ -1,0 +1,26 @@
+# 编译与构建产物
+impl/
+work/
+work_*/
+*.fs
+*.bin
+*.log
+*.vcd
+*.wlf
+*.vstf
+*.qdb
+*.qpg
+*.qtl
+*.o
+*.elf
+lra_example
+lra_example.exe
+
+# 编辑器和 IDE 状态
+*.user
+.idea/
+.vscode/
+
+# 本地工具生成文件
+__pycache__/
+*.pyc

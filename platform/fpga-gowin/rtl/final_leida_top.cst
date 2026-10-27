@@ -1,0 +1,124 @@
+// ============================================================================
+//  final_leida_top.cst —— 车尾=车头 + RPLIDAR A1 激光雷达（v1.0 骨架）
+//  v1.0：从 final_servo 拷贝，撤掉超声/舵机约束；其余（电机/按键/IMU/串口/LED）不变
+//  雷达 UART 引脚在 v1.1 加入，接线见 docs/接线说明.md
+// ============================================================================
+
+IO_LOC "clk" Y18;
+IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
+
+// 按键
+IO_LOC "key_stop" F15;
+IO_PORT "key_stop" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "key_start" A20;
+IO_PORT "key_start" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "key_fwd" B20;
+IO_PORT "key_fwd" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "key_left" A21;
+IO_PORT "key_left" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "key_r" B21;
+IO_PORT "key_r" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// 拨码 SW0..SW7 = G22/D22/E22/G21/E21/D21/C22/B22
+IO_LOC "sw[0]" G22;
+IO_PORT "sw[0]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[1]" D22;
+IO_PORT "sw[1]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[2]" E22;
+IO_PORT "sw[2]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[3]" G21;
+IO_PORT "sw[3]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[4]" E21;
+IO_PORT "sw[4]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[5]" D21;
+IO_PORT "sw[5]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[6]" C22;
+IO_PORT "sw[6]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "sw[7]" B22;
+IO_PORT "sw[7]" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// TB6612（物理脚：A=原左轮，B=原右轮；顶层 REAR_AS_FRONT 做映射）
+IO_LOC "ain1_l" A13;
+IO_PORT "ain1_l" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "ain2_l" A14;
+IO_PORT "ain2_l" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "pwma" A15;
+IO_PORT "pwma" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "ain1_r" A16;
+IO_PORT "ain1_r" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "ain2_r" A18;
+IO_PORT "ain2_r" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "pwmb" A19;
+IO_PORT "pwmb" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "stby" F13;
+IO_PORT "stby" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// 编码器（物理左右不改线）
+IO_LOC "enc_al" F14;
+IO_PORT "enc_al" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "enc_bl" E13;
+IO_PORT "enc_bl" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "enc_ar" E14;
+IO_PORT "enc_ar" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "enc_br" C13;
+IO_PORT "enc_br" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// ★v1.0：HC-SR04（C14/D14）与舵机（D15）已停用，约束一并撤掉★
+//   v1.1 把 D14/D15 让给雷达（见下）
+// ★v1.1 雷达 RPLIDAR A1M8★：手册规格 115200 8N1、输出高 2.9~3.5V、输入高 ≥1.6V
+//   ⇒ 3.3V CMOS，可以直连 LVCMOS33（建议串 100Ω）
+//   注意是【交叉接】：雷达 TX → FPGA lidar_rx(D14)；雷达 RX → FPGA lidar_tx(D15)
+IO_LOC "lidar_rx" D14;
+IO_PORT "lidar_rx" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+IO_LOC "lidar_tx" D15;
+IO_PORT "lidar_tx" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// IMU
+IO_LOC "imu_rx" B13;
+IO_PORT "imu_rx" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// IR
+IO_LOC "ir_rx" F21;
+IO_PORT "ir_rx" IO_TYPE=LVCMOS33 PULL_MODE=UP BANK_VCCIO=3.3;
+
+// 串口调试
+IO_LOC "uart_tx" M15;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// ★v1.6 板载调试指示：蜂鸣器★
+//   ★板上 LED0/LED1 用不了★：官方表写 LED0=M22、LED1=N22，但 GW5AT-60B 封装上
+//     这两颗是专用脚（SSPI），约束上去 P&R 直接报 PR2017 "dedicated pin"
+//     ——这就是本工程一直写"不用 M22/N22"的真正原因。
+//     所以"雷达健康灯"改用 led[1]（B15，扩展口，原来恒 0）：想看得见就在扩展口
+//     接一颗 LED（B15 → 330Ω~1kΩ → GND）即可；不想接就靠蜂鸣器听。
+//   beep = N19（板上【无源】蜂鸣器，经三极管驱动；手册第 19 章表 19-2 确认管脚）：
+//          必须给 2~5kHz 方波才响，本设计用 4kHz。
+//          ★注意：官方管脚表里 LED8 也写着 N19，那是表里的笔误★
+IO_LOC "beep" N19;
+IO_PORT "beep" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// ★v1.7 蓝牙调试串口（只输出日志镜像）★
+//   bt_tx → 蓝牙模块的 RX，取扩展口最远端的 GPIO0_31（D19）：
+//     离车体走线（电机 A13~A19/F13、编码器 F14/E13/E14/C13、IMU B13、
+//     雷达 D14/D15、LED C15/B15）隔了十几个脚位，物理上最好认、最不容易缠错。
+//   蓝牙模块的 TX 暂时不用接；以后要做"手机发指令给车"，再启用 GPIO0_30（E19）当 bt_rx 喵。
+IO_LOC "bt_tx" D19;
+IO_PORT "bt_tx" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+// LED
+IO_LOC "led[2]" L21;
+IO_PORT "led[2]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[3]" K21;
+IO_PORT "led[3]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[4]" K22;
+IO_PORT "led[4]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[5]" J22;
+IO_PORT "led[5]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[6]" H22;
+IO_PORT "led[6]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[7]" M21;
+IO_PORT "led[7]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[0]" C15;
+IO_PORT "led[0]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "led[1]" B15;
+IO_PORT "led[1]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;

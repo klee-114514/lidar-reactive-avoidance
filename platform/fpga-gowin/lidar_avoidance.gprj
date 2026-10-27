@@ -1,0 +1,28 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW5AT-60B" pn="GW5AT-LV60PG484AC1/I0">gw5at60b-002</Device>
+    <FileList>
+        <File path="rtl/avoid_fsm.v" type="file.verilog" enable="1"/>
+        <File path="rtl/encoder_decode.v" type="file.verilog" enable="1"/>
+        <File path="rtl/final_leida_top.v" type="file.verilog" enable="1"/>
+        <File path="rtl/imu_parse.v" type="file.verilog" enable="1"/>
+        <File path="rtl/ir_decode.v" type="file.verilog" enable="1"/>
+        <File path="rtl/ir_remote_ctrl.v" type="file.verilog" enable="1"/>
+        <File path="rtl/key_debounce.v" type="file.verilog" enable="1"/>
+        <File path="rtl/key_triple.v" type="file.verilog" enable="1"/>
+        <File path="rtl/lidar_cmd.v" type="file.verilog" enable="1"/>
+        <File path="rtl/lidar_parse.v" type="file.verilog" enable="1"/>
+        <File path="rtl/lidar_rx.v" type="file.verilog" enable="1"/>
+        <File path="rtl/maze_nav_fsm.v" type="file.verilog" enable="1"/>
+        <File path="rtl/motor_driver_top.v" type="file.verilog" enable="1"/>
+        <File path="rtl/motor_pid.v" type="file.verilog" enable="1"/>
+        <File path="rtl/tb6612_driver.v" type="file.verilog" enable="1"/>
+        <File path="rtl/uart_rx.v" type="file.verilog" enable="1"/>
+        <File path="rtl/uart_tx.v" type="file.verilog" enable="1"/>
+        <File path="rtl/final_leida_top.cst" type="file.cst" enable="1"/>
+        <File path="rtl/final_leida_top.sdc" type="file.sdc" enable="1"/>
+    </FileList>
+</Project>
