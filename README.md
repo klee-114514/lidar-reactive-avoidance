@@ -39,7 +39,7 @@
 - [MCU 适配层模板](platform/mcu-template/lidar_avoidance_adapter.h)
 - [车辆标定表](config/vehicle-calibration.csv)
 - [配置填写示例](config/lra_vehicle_config.example.h)
-- [扫描回放示例](examples/scan-replay)
+- [扫描回放示例与使用说明](examples/scan-replay/README.md)
 - [FPGA 示例工程](platform/fpga-gowin/lidar_avoidance.gprj)
 
 ## 核心流程
